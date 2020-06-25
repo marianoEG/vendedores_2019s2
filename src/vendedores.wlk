@@ -11,6 +11,10 @@ class Vendedor {
 	}
 	method esFirme(){ return certificaciones.sum({cert=>cert.puntos()}) >= 30}
 	method esInfluyente(){ return false} 
+	method puntaje(){ return certificaciones.sum({cert=>cert.puntos()})}
+	method esGenerico(){ return certificaciones.any({cert=>cert.tipo() != producto})}
+	method tieneAfinidadConCentro(cual){ return self.puedeTrabajarEn(cual.ciudad()) }
+	method esCandidato(cual){ return self.tieneAfinidadConCentro(cual) and self.esVersatil()}
 }
 
 class VendedorFijo inherits Vendedor{
@@ -34,6 +38,7 @@ class ComercioCorresponsal inherits Vendedor{
 	method provinciasConSucursales(){ return ciudadesSucursales.map({suc=>suc.provincia()}).asSet().size()}
 	method ciudadesConSucursales(){ return ciudadesSucursales.asSet().size()}
 	override method esInfluyente(){ return self.ciudadesConSucursales() >= 5 or self.provinciasConSucursales() >= 3 }
+	override method tieneAfinidadConCentro(cual){ return super(cual) and not ciudadesSucursales.all({sucu=>cual.puedeCubrir(sucu)})}
 }
 
 class Certificacion {
