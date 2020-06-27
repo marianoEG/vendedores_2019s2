@@ -13,6 +13,5 @@ class ClienteDetallista {
 
 class ClienteHumanista {
 	
-	method mePuedeAtender(quien){ return quien == new VendedorFijo() or quien == new VendedorViajante()}
-	
+	method mePuedeAtender(quien){ return quien.esPersona()}	
 }
